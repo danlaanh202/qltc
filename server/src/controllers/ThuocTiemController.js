@@ -1,4 +1,5 @@
 const db = require("../models");
+const Op = db.Sequelize.Op;
 const ThuoctiemServices = require("../services/thuoctiem.service");
 
 class ThuocTiemController {
@@ -46,6 +47,20 @@ class ThuocTiemController {
       return res.status(500).json(error);
     }
   }
+  // async search(req, res) {
+  //   try {
+  //     const searchDocs = await db.ThuocTiem.findAll({
+  //       where: {
+  //         ten_thuoc: {
+  //           [Op.like]: `%${req.query.ten_thuoc}%`,
+  //         },
+  //       },
+  //     });
+  //     return res.status(200).json(searchDocs);
+  //   } catch (error) {
+  //     return res.status(500).json(error);
+  //   }
+  // }
 }
 
 module.exports = new ThuocTiemController();

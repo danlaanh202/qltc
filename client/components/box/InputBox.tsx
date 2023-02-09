@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { IDoctor, IPatient } from "../../types";
+import { IDoctor, IMedicine, IPatient } from "../../types";
 import DropdownItem from "./DropdownItem";
 
 const StyledInputBox = styled.div`
@@ -30,9 +30,9 @@ const InputBox = ({
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
   setSelectItem: Dispatch<SetStateAction<any>>;
-  dropdownData: IPatient[] | IDoctor[];
+  dropdownData: IPatient[] | IDoctor[] | IMedicine[];
   nextStep: () => void;
-  type?: "patient" | "doctor";
+  type?: "patient" | "doctor" | "medicine";
 }) => {
   return (
     <StyledInputBox>
@@ -40,7 +40,11 @@ const InputBox = ({
         type="text"
         className="box-input"
         placeholder={
-          type === "patient" ? "Nhập vào tên bệnh nhân" : "Nhập vào tên bác sĩ"
+          type === "patient"
+            ? "Nhập vào tên bệnh nhân"
+            : type === "doctor"
+            ? "Nhập vào tên bác sĩ"
+            : "Nhập vào tên thuốc"
         }
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}

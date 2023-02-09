@@ -64,6 +64,7 @@ const login = () => {
       data.username === process.env.username
     ) {
       sessionStorage.setItem("user", "signed");
+      router.push("/dashboard");
     }
   };
   const router = useRouter();

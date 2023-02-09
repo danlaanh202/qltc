@@ -26,13 +26,13 @@ db.ThuocTiem = ThuocTiem(sequelize, Sequelize.DataTypes);
 db.BacSi = BacSi(sequelize, Sequelize.DataTypes);
 db.PhieuTiem = PhieuTiem(sequelize, Sequelize.DataTypes);
 
-db.PhieuTiem.hasMany(db.ThuocTiem, {
+db.PhieuTiem.belongsTo(db.ThuocTiem, {
   foreignKey: "ma_so_thuoc",
 });
-db.PhieuTiem.hasOne(db.BenhNhan, {
+db.PhieuTiem.belongsTo(db.BenhNhan, {
   foreignKey: "id_benh_nhan",
 });
-db.PhieuTiem.hasOne(db.BacSi, {
+db.PhieuTiem.belongsTo(db.BacSi, {
   foreignKey: "ma_dinh_danh",
 });
 

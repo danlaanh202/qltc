@@ -7,7 +7,7 @@ import CreatePaperForm from "../../components/form/CreatePaperForm";
 import { Steps } from "antd";
 import { useEffect, useState } from "react";
 import InputBox from "../../components/box/InputBox";
-import { IDoctor, IPatient } from "../../types";
+import { IDoctor, IMedicine, IPatient } from "../../types";
 import callApiServices from "../../utils/callApiServices";
 import useDebounce from "../../hooks/useDebounce";
 
@@ -21,6 +21,18 @@ const StyledCreateContainer = styled.div`
   .step-container {
     width: 100%;
   }
+  .paper-info-container {
+    margin-top: 20px;
+    .item {
+      font-size: 16px;
+      margin-top: 8px;
+      label {
+        font-weight: 600;
+      }
+      .item-content {
+      }
+    }
+  }
 `;
 const create = () => {
   const [current, setCurrent] = useState(0);
@@ -30,12 +42,30 @@ const create = () => {
   const [selectedPatient, setSelectedPatient] = useState<IPatient>();
   const [doctors, setDoctors] = useState<IDoctor[]>([]);
   const [selectedDoctor, setSelectedDoctor] = useState<IDoctor>();
+  const [medicines, setMedicines] = useState<IMedicine[]>([]);
+  const [selectedMedicine, setSelectedMedicine] = useState<IMedicine>();
 
   const nextStep = () => {
     setCurrent((current) => current + 1);
     setSearchQuery("");
   };
-
+  const handleCreatePaper = async (data: any) => {
+    try {
+      await callApiServices
+        .taoPhieuTiem({
+          id_benh_nhan: selectedPatient?.id_benh_nhan,
+          ma_dinh_danh: selectedDoctor?.ma_dinh_danh,
+          ma_so_thuoc: selectedMedicine?.ma_so_thuoc,
+          so_mui_da_tiem: parseInt(data.medicine_amount),
+          ngay_da_tiem: data.ngay_da_tiem,
+          ngay_tiem: Date.now(),
+          so_ngay_tiem_mui_ke_tiep: selectedMedicine?.so_ngay_tiem_mui_ke_tiep,
+        })
+        .then((res) => console.log(res.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     if (current === 0 && searchQuery !== "") {
       callApiServices
@@ -46,6 +76,11 @@ const create = () => {
       callApiServices
         .timKiemBacSi(searchQueryDebounce)
         .then((response) => setDoctors(response.data));
+    }
+    if (current === 2 && searchQuery !== "") {
+      callApiServices
+        .timKiemThuocTiem(searchQueryDebounce)
+        .then((response) => setMedicines(response.data));
     }
   }, [current, searchQueryDebounce]);
   return (
@@ -69,6 +104,9 @@ const create = () => {
               },
               {
                 title: "Chọn bác sĩ",
+              },
+              {
+                title: "Chọn Thuốc",
               },
               {
                 title: "Hoàn thành phiếu tiêm",
@@ -96,7 +134,47 @@ const create = () => {
                 type="doctor"
               />
             )}
-            {current === 2 && <CreatePaperForm />}
+            {current === 2 && (
+              <InputBox
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                setSelectItem={setSelectedMedicine}
+                dropdownData={medicines}
+                nextStep={nextStep}
+                type="medicine"
+              />
+            )}
+            {current === 3 && (
+              <>
+                <div className="paper-info-container">
+                  <div className="item">
+                    <label htmlFor="">Tên bệnh nhân:</label>{" "}
+                    <span className="item-content">
+                      {selectedPatient?.ho_ten}
+                    </span>
+                  </div>
+                  <div className="item">
+                    <label htmlFor="">Tên bác sĩ:</label>{" "}
+                    <span className="item-content">
+                      {selectedDoctor?.ten_bac_si}
+                    </span>
+                  </div>
+                  <div className="item">
+                    <label htmlFor="">Tên thuốc:</label>{" "}
+                    <span className="item-content">
+                      {selectedMedicine?.ten_thuoc}
+                    </span>
+                  </div>
+                  <div className="item">
+                    <label htmlFor="">Số ngày tiêm mũi kế tiếp:</label>{" "}
+                    <span className="item-content">
+                      {selectedMedicine?.so_ngay_tiem_mui_ke_tiep}
+                    </span>
+                  </div>
+                </div>
+                <CreatePaperForm createPaper={handleCreatePaper} />
+              </>
+            )}
           </div>
         </div>
       </StyledCreateContainer>

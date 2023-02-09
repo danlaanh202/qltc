@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { IDoctor, IPatient } from "../../types";
+import { IDoctor, IMedicine, IPatient } from "../../types";
 
 const StyledDropdownItemContainer = styled.div`
   padding: 10px;
   border: 1px solid #dbdbdb;
   width: 100%;
   border-radius: 4px;
+  min-height: 100px;
   cursor: pointer;
   :hover {
     background: #fafafa;
@@ -22,12 +23,12 @@ const DropdownItem = ({
   data,
   type,
 }: {
-  data: IPatient | IDoctor;
-  type?: "patient" | "doctor";
+  data: IPatient | IDoctor | IMedicine;
+  type?: "patient" | "doctor" | "medicine";
 }) => {
   return (
     <StyledDropdownItemContainer>
-      {type === "patient" ? (
+      {type === "patient" && (
         <>
           <div className="item">
             <span className="item-label">Họ và tên:</span>{" "}
@@ -46,20 +47,44 @@ const DropdownItem = ({
             {(data as IPatient).so_dien_thoai}
           </div>
         </>
-      ) : (
+      )}
+      {type === "doctor" && (
         <>
           <div className="item">
-            <span className="item-label">Họ và tên:</span> Trần chí thanh
+            <span className="item-label">Họ và tên:</span>
+            {(data as IDoctor).ten_bac_si}
           </div>
           <div className="item">
-            <span className="item-label">Tuổi:</span> 20
+            <span className="item-label">Tuổi:</span> {(data as IDoctor).tuoi}
           </div>
           <div className="item">
-            <span className="item-label">Chức danh:</span> Bác sĩ chính
+            <span className="item-label">Chức danh:</span>{" "}
+            {(data as IDoctor).chuc_danh}
           </div>
           <div className="item">
-            <span className="item-label">Số điện thoại:</span> 0974498918
+            <span className="item-label">Số điện thoại:</span>{" "}
+            {(data as IDoctor).so_dien_thoai}
           </div>
+        </>
+      )}
+      {type === "medicine" && (
+        <>
+          <div className="item">
+            <span className="item-label">Tên thuốc:</span>{" "}
+            {(data as IMedicine).ten_thuoc}
+          </div>
+          <div className="item">
+            <span className="item-label">Số mũi cần tiêm:</span>{" "}
+            {(data as IMedicine).so_mui_can_tiem}
+          </div>
+          <div className="item">
+            <span className="item-label">Số ngày tiêm mũi kế:</span>{" "}
+            {(data as IMedicine).so_ngay_tiem_mui_ke_tiep}
+          </div>
+          {/* <div className="item">
+            <span className="item-label">Mã số thuốc:</span>{" "}
+            {(data as IMedicine).ma_so_thuoc}
+          </div> */}
         </>
       )}
     </StyledDropdownItemContainer>

@@ -5,7 +5,9 @@ import HomeIcon from "@mui/icons-material/Home";
 import MedicationIcon from "@mui/icons-material/Medication";
 import AirlineSeatFlatIcon from "@mui/icons-material/AirlineSeatFlat";
 import ReceiptIcon from "@mui/icons-material/Receipt";
+import VaccinesIcon from "@mui/icons-material/Vaccines";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
+// import IdcardOutlined from "@mui/icons-material/IdcardOutlined";
 import { SetStateType } from "../../types";
 const StyledSidebar = styled.div`
   width: 300px;
@@ -41,7 +43,7 @@ export const sidebarList: ISidebarList[] = [
     link: "/medicine_management",
     icon: (
       <>
-        <MedicationIcon />
+        <VaccinesIcon />
       </>
     ),
   },
@@ -60,6 +62,15 @@ export const sidebarList: ISidebarList[] = [
     icon: (
       <>
         <ReceiptIcon />
+      </>
+    ),
+  },
+  {
+    title: "Quản lý bác sĩ",
+    link: "/doctor_management",
+    icon: (
+      <>
+        <MedicationIcon />
       </>
     ),
   },

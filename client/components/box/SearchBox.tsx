@@ -16,6 +16,10 @@ const StyledSearchBox = styled.div`
       width: 100%;
     }
   }
+  .search-item-container {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 `;
 const SearchBox = () => {
   const [searchQuery, setSearchQuery] = useState("");

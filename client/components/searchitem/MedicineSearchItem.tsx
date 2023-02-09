@@ -6,13 +6,12 @@ const StyledMedicineContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 12px;
-  .medicine-image-container {
-    width: 200px;
-    margin-right: 16px;
-    img {
-      width: 100%;
-      object-fit: cover;
-    }
+  padding: 8px;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  cursor: pointer;
+  :hover {
+    border-color: #072d94;
   }
   .medicine-information-container {
     flex: 1;
@@ -30,16 +29,27 @@ const StyledMedicineContainer = styled.div`
 const MedicineSearchItem = ({ data }: { data: IMedicine }) => {
   return (
     <StyledMedicineContainer>
-      <div className="medicine-image-container">
-        <img src="/static/anhthuoc.jpg" alt="" />
-      </div>
       <div className="medicine-information-container">
-        <div className="medicine-title">{data.ten_thuoc}</div>
-        <div className="medicine-description">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae
-          esse in exercitationem officiis beatae consectetur? Dignissimos
-          aliquid libero, optio totam saepe accusantium! Ad eaque alias dicta
-          saepe perferendis minus quos.
+        <div className="card-item">
+          <label htmlFor="">Tên thuốc: </label>
+          <span>{data.ten_thuoc}</span>
+        </div>
+        <div className="card-item">
+          <label htmlFor="">Đơn giá: </label>
+          <span>{data.so_mui_can_tiem}</span>
+        </div>
+
+        <div className="card-item">
+          <label htmlFor="">Số mũi cần tiêm: </label>
+          <span>{data.so_mui_can_tiem}</span>
+        </div>
+        <div className="card-item">
+          <label htmlFor="">Mũi tiêm kế tiếp: </label>
+          <span>{data.so_ngay_tiem_mui_ke_tiep} ngày</span>
+        </div>
+        <div className="card-item">
+          <label htmlFor="">Số lượng: </label>
+          <span>{data.so_luong}</span>
         </div>
       </div>
     </StyledMedicineContainer>

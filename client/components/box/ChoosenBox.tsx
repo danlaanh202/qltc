@@ -45,11 +45,7 @@ const ChoosenBox = ({
         router.push(href);
       }}
     >
-      <div className="icon-container">
-        {/* <LocalHospitalIcon style={{ width: "60px", height: "60px" }} /> */}
-        {icon}
-        {/* <AccessibilityNewIcon style={{ width: "60px", height: "60px" }} /> */}
-      </div>
+      <div className="icon-container">{icon}</div>
       <div className="title-container">{title}</div>
     </ChoosenBoxContainer>
   );

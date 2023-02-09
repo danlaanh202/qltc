@@ -4,6 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import FormRow from "./FormRow";
 import FormInput from "./FormInput";
+import { useState } from "react";
+import FilterListBox from "../box/FilterListBox";
 const schema = yup.object({});
 const StyledFormContainer = styled.div`
   .submit-btn {
@@ -16,7 +18,11 @@ const StyledFormContainer = styled.div`
     cursor: pointer;
   }
 `;
-const CreateMedicineForm = () => {
+const CreateMedicineForm = ({
+  createPaper,
+}: {
+  createPaper: (data: any) => void;
+}) => {
   const {
     handleSubmit,
     control,
@@ -25,8 +31,9 @@ const CreateMedicineForm = () => {
     resolver: yupResolver(schema),
     mode: "onChange",
   });
+  const [vaccinatedDate, setVaccinatedDate] = useState();
   const onSubmitHandler = (data: any) => {
-    console.log(data);
+    createPaper({ ...data, ngay_da_tiem: vaccinatedDate });
   };
   return (
     <StyledFormContainer>
@@ -37,34 +44,21 @@ const CreateMedicineForm = () => {
           <FormInput
             control={control}
             inputType="text"
-            label="ID bệnh nhân"
-            id="patient_cccd"
-          />
-          <FormInput
-            control={control}
-            inputType="text"
-            label="Mã định danh(bác sĩ)"
-            id="doctor_id"
-            placeholder=""
-          />
-        </FormRow>
-        <FormRow numberOfCol={2}>
-          <FormInput
-            control={control}
-            inputType="text"
-            label="Mã số thuốc"
-            id="medicine_id"
-          />
-
-          <FormInput
-            control={control}
-            inputType="text"
             label="Số mũi đã tiêm"
             id="medicine_amount"
           />
+          <FormInput
+            control={control}
+            inputType="date"
+            label="Ngày cuối đã tiêm"
+            id="ngay_da_tiem"
+            setStartDate={setVaccinatedDate}
+            startDate={vaccinatedDate}
+          />
         </FormRow>
+        <FilterListBox />
         <button type="submit" className="submit-btn">
-          Thêm thuốc tiêm
+          Hoàn thành phiếu tiêm
         </button>
       </form>
     </StyledFormContainer>

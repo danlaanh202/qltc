@@ -22,6 +22,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(20),
       allowNull: false,
     },
+    gioi_tinh: {
+      type: DataTypes.STRING(5),
+      allowNull: false,
+    },
+    dia_chi: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
   });
 
   return BacSi;

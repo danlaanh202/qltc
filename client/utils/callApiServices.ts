@@ -21,6 +21,11 @@ export default new (class CallApiServices {
       console.log(error);
     }
   }
+  async timKiemThuocTiem(searchQuery: string) {
+    return await publicRequest.get(
+      `/thuoc_tiem/tim_kiem?ten_thuoc=${searchQuery}`
+    );
+  }
   async editThuoc(body: any) {
     try {
       return await publicRequest.put("/thuoc_tiem/sua_thuoc", body);
@@ -57,7 +62,27 @@ export default new (class CallApiServices {
   async getBacSi() {
     return await publicRequest.get("/bac_si/get_all");
   }
+  async editBacSi(record: any) {
+    return await publicRequest.put("/bac_si/edit", {
+      ma_dinh_danh: record.ma_dinh_danh,
+      tuoi: parseInt(record.tuoi),
+      chuc_danh: record.chuc_danh,
+      so_dien_thoai: record.so_dien_thoai,
+      dia_chi: record.dia_chi,
+    });
+  }
+  async deleteBacsi(maDinhDanh: string) {
+    return await publicRequest.delete(
+      `/bac_si/delete?ma_dinh_danh=${maDinhDanh}`
+    );
+  }
   async timKiemBacSi(searchQuery: string) {
     return await publicRequest.get(`/bac_si/search?ten_bac_si=${searchQuery}`);
+  }
+  async taoPhieuTiem(record: any) {
+    return await publicRequest.post("/phieu_tiem/create", record);
+  }
+  async getPhieuTiem() {
+    return await publicRequest.get("/phieu_tiem/get");
   }
 })();

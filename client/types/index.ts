@@ -25,4 +25,21 @@ export interface IPatient extends ITimeStamps {
   email: string;
   dia_chi: string;
 }
-export interface IDoctor extends ITimeStamps {}
+export interface IDoctor extends ITimeStamps {
+  ma_dinh_danh: string;
+  ten_bac_si: string;
+  tuoi: number;
+  chuc_danh: string;
+  so_dien_thoai: string;
+}
+
+export interface IPaper extends ITimeStamps {
+  id_phieu_tiem: string;
+  id_benh_nhan: string;
+  ma_dinh_danh: string;
+  ma_so_thuoc: string;
+  so_mui_da_tiem: number;
+  ngay_da_tiem: Date;
+  ngay_tiem: Date;
+  so_ngay_tiem_mui_ke_tiep: number;
+}

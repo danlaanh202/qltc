@@ -17,6 +17,26 @@ class BacSiController {
       return res.status(500).json(error);
     }
   }
+  async editBacSi(req, res) {
+    try {
+      const updatedDoc = await db.BacSi.update(
+        {
+          ten_bac_si: req.body.ten_bac_si,
+          tuoi: req.body.tuoi,
+          chuc_danh: req.body.chuc_danh,
+          dia_chi: req.body.dia_chi,
+        },
+        {
+          where: {
+            ma_dinh_danh: req.body.ma_dinh_danh,
+          },
+        }
+      );
+      return res.status(200).json(updatedDoc);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }
   //   async editBenhNhan(req, res) {
   //     try {
   //       const updatedDoc = await db.BenhNhan.update(
@@ -50,6 +70,18 @@ class BacSiController {
         },
       });
       return res.status(200).json(getDoc);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }
+  async deleteBacSi(req, res) {
+    try {
+      const deleteDoc = await db.BacSi.destroy({
+        where: {
+          ma_dinh_danh: req.query.ma_dinh_danh,
+        },
+      });
+      return res.status(200).json(deleteDoc);
     } catch (error) {
       return res.status(500).json(error);
     }
