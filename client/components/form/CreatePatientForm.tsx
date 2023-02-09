@@ -6,6 +6,7 @@ import FormRow from "./FormRow";
 import FormInput from "./FormInput";
 import { useState } from "react";
 import useVNAddress from "../../hooks/useVNAddress";
+import callApiServices from "../../utils/callApiServices";
 const schema = yup.object({});
 const StyledFormContainer = styled.div`
   .submit-btn {
@@ -43,15 +44,28 @@ const CreatePatientForm = () => {
   ] = useVNAddress();
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState();
-  const onSubmitHandler = (data: any) => {
-    console.log({
-      ...data,
-      patient_dob: dob,
-      patient_gender: gender,
-      district: selectDistrict.name,
-      province: selectProvince.name,
-      ward: selectWard.name,
-    });
+  const onSubmitHandler = async (data: any) => {
+    // console.log({
+    //   ...data,
+    //   patient_dob: dob,
+    //   patient_gender: gender,
+    //   district: selectDistrict.name,
+    //   province: selectProvince.name,
+    //   ward: selectWard.name,
+    // });
+    try {
+      await callApiServices
+        .taoBenhNhan({
+          ho_ten: data.ho_ten,
+          can_cuoc: data.can_cuoc,
+          ngay_sinh: dob,
+          so_dien_thoai: data.so_dien_thoai,
+          gioi_tinh: gender,
+          email: data.email,
+          dia_chi: `${selectWard.name} - ${selectDistrict.name} - ${selectDistrict.name}`,
+        })
+        .then((response) => console.log(response.data));
+    } catch (error) {}
   };
   return (
     <StyledFormContainer>
@@ -63,22 +77,22 @@ const CreatePatientForm = () => {
             control={control}
             inputType="text"
             label="Họ và tên"
-            id="patient_name"
+            id="ho_ten"
           />
           <FormInput
             control={control}
             inputType="text"
             label="Số căn cước công dân"
-            id="patient_cccd"
+            id="can_cuoc"
             placeholder="Số căn cước công dân"
           />
         </FormRow>
-        <FormRow numberOfCol={3}>
+        <FormRow numberOfCol={2}>
           <FormInput
             control={control}
             inputType="text"
             label="Số điện thoại"
-            id="patient_phone_number"
+            id="so_dien_thoai"
           />
           <FormInput
             control={control}
@@ -87,6 +101,14 @@ const CreatePatientForm = () => {
             id="patient_dob"
             setStartDate={setDob}
             startDate={dob}
+          />
+        </FormRow>
+        <FormRow numberOfCol={2}>
+          <FormInput
+            control={control}
+            inputType="text"
+            label="Email"
+            id="email"
           />
 
           <FormInput

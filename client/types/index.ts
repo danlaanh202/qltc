@@ -15,3 +15,14 @@ export interface IMedicine extends ITimeStamps {
   so_mui_can_tiem: number;
   so_ngay_tiem_mui_ke_tiep: number;
 }
+export interface IPatient extends ITimeStamps {
+  id_benh_nhan: string;
+  ho_ten: string;
+  can_cuoc: string;
+  ngay_sinh: string;
+  so_dien_thoai: string;
+  gioi_tinh: string;
+  email: string;
+  dia_chi: string;
+}
+export interface IDoctor extends ITimeStamps {}

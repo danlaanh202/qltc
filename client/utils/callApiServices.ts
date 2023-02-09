@@ -37,4 +37,27 @@ export default new (class CallApiServices {
       console.log(error);
     }
   }
+  async taoBenhNhan(record: any) {
+    return await publicRequest.post("/benh_nhan/create", record);
+  }
+  async getBenhNhan() {
+    return await publicRequest.get("/benh_nhan/get_all");
+  }
+  async editBenhNhan(record: any) {
+    return await publicRequest.put("/benh_nhan/edit", record);
+  }
+  async timKiemBenhNhan(searchQuery: string) {
+    return await publicRequest.get(
+      `/benh_nhan/search?ten_benh_nhan=${searchQuery}`
+    );
+  }
+  async taoBacSi(record: any) {
+    return await publicRequest.post("/bac_si/create", record);
+  }
+  async getBacSi() {
+    return await publicRequest.get("/bac_si/get_all");
+  }
+  async timKiemBacSi(searchQuery: string) {
+    return await publicRequest.get(`/bac_si/search?ten_bac_si=${searchQuery}`);
+  }
 })();

@@ -1,7 +1,3 @@
-const BacSi = require("./BacSi.model");
-const BenhNhan = require("./BenhNhan.model");
-const ThuocTiem = require("./ThuocTiem.model");
-
 module.exports = (sequelize, DataTypes) => {
   const PhieuTiem = sequelize.define(
     "PhieuTiem",
@@ -16,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: "BenhNhan",
+          model: "BenhNhans",
           key: "id_benh_nhan",
         },
       },
@@ -24,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: "BacSi",
+          model: "BacSis",
           key: "ma_dinh_danh",
         },
       },
@@ -32,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: "ThuocTiem",
+          model: "ThuocTiems",
           key: "ma_so_thuoc",
         },
       },

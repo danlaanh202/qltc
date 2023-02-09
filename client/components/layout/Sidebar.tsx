@@ -74,7 +74,6 @@ export const sidebarList: ISidebarList[] = [
   },
 ];
 const Sidebar = ({ isShowSidebar }: { isShowSidebar: boolean }) => {
-  console.log(isShowSidebar);
   return isShowSidebar ? (
     <StyledSidebar>
       <div className="logo-container">TTTC</div>

@@ -21,10 +21,10 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.PhieuTiem = PhieuTiem(sequelize, Sequelize.DataTypes);
 db.BenhNhan = BenhNhan(sequelize, Sequelize.DataTypes);
 db.ThuocTiem = ThuocTiem(sequelize, Sequelize.DataTypes);
 db.BacSi = BacSi(sequelize, Sequelize.DataTypes);
+db.PhieuTiem = PhieuTiem(sequelize, Sequelize.DataTypes);
 
 db.PhieuTiem.hasMany(db.ThuocTiem, {
   foreignKey: "ma_so_thuoc",

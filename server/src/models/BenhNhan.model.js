@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(30),
       allowNull: false,
     },
+    dia_chi: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
   });
 
   return BenhNhan;
