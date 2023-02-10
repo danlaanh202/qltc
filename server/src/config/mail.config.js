@@ -1,10 +1,11 @@
+require("dotenv").config();
 module.exports = {
   MAILER: "smtp",
   HOST: "smtp.gmail.com",
   PORT: 587,
-  USERNAME: "hethongtiemchung2509@gmail.com",
-  PASSWORD: "danlaanh202",
+  USERNAME: process.env.GMAIL,
+  PASSWORD: process.env.PASSWORD,
   ENCRYPTION: "TLS",
-  FROM_ADDRESS: "hethongtiemchung2509@gmail.com",
+  FROM_ADDRESS: process.env.GMAIL,
   FROM_NAME: "Hệ thống tiêm chủng",
 };

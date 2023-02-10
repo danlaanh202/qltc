@@ -4,9 +4,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import FormRow from "./FormRow";
 import FormInput from "./FormInput";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import useVNAddress from "../../hooks/useVNAddress";
 import callApiServices from "../../utils/callApiServices";
+import { IPatient } from "../../types";
 const schema = yup.object({});
 const StyledFormContainer = styled.div`
   .submit-btn {
@@ -19,7 +20,11 @@ const StyledFormContainer = styled.div`
     cursor: pointer;
   }
 `;
-const CreatePatientForm = () => {
+const CreatePatientFormGuest = ({
+  onSubmitH,
+}: {
+  onSubmitH: (data: any) => void;
+}) => {
   const {
     handleSubmit,
     control,
@@ -45,6 +50,14 @@ const CreatePatientForm = () => {
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState();
   const onSubmitHandler = async (data: any) => {
+    // console.log({
+    //   ...data,
+    //   patient_dob: dob,
+    //   patient_gender: gender,
+    //   district: selectDistrict.name,
+    //   province: selectProvince.name,
+    //   ward: selectWard.name,
+    // });
     try {
       await callApiServices
         .taoBenhNhan({
@@ -56,7 +69,7 @@ const CreatePatientForm = () => {
           email: data.email,
           dia_chi: `${selectWard.name} - ${selectDistrict.name} - ${selectDistrict.name}`,
         })
-        .then((response) => console.log(response.data));
+        .then((response) => onSubmitH(response.data));
     } catch (error) {}
   };
   return (
@@ -147,4 +160,4 @@ const CreatePatientForm = () => {
   );
 };
 
-export default CreatePatientForm;
+export default CreatePatientFormGuest;

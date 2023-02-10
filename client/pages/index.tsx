@@ -38,13 +38,13 @@ const index = () => {
           href="/dashboard"
         ></ChoosenBox>
         <ChoosenBox
-          title="Khách"
+          title="Tạo phiếu tiêm"
           icon={
             <>
               <AccessibilityNewIcon style={{ width: "60px", height: "60px" }} />
             </>
           }
-          href="/guest"
+          href="/tao_phieu_tiem"
         ></ChoosenBox>
       </div>
     </StyledPageContainer>

@@ -31,6 +31,7 @@ const CreateMedicineForm = ({
     resolver: yupResolver(schema),
     mode: "onChange",
   });
+
   const [vaccinatedDate, setVaccinatedDate] = useState();
   const onSubmitHandler = (data: any) => {
     createPaper({ ...data, ngay_da_tiem: vaccinatedDate });

@@ -2,19 +2,29 @@ import React, { useEffect, useState } from "react";
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from "antd";
 import styled from "styled-components";
 import callApiServices from "../../utils/callApiServices";
-import { IPatient, IThongKe } from "../../types";
-import { format } from "date-fns";
+import { IThongKe, ITimeStamps } from "../../types";
+import { compareAsc, format } from "date-fns";
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
   title: any;
   inputType: "number" | "text";
-  record: IPatient;
+  record: IAna;
   index: number;
   children: React.ReactNode;
 }
 
+interface IAna extends ITimeStamps {
+  _id: string;
+  email_benh_nhan: string;
+  ho_ten: string;
+  id_benh_nhan: string;
+  ngay_tiem_mui_ke_tiep: string;
+  so_mui_con_thieu: string;
+  so_mui_tiem: string;
+  ten_thuoc: string;
+}
 const EditableCell: React.FC<EditableCellProps> = ({
   editing,
   dataIndex,
@@ -51,58 +61,34 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 const SoMuiDaTiemTable: React.FC = () => {
   const [form] = Form.useForm();
-  const [data, setData] = useState<IPatient[]>([]);
+  const [data, setData] = useState<IAna[]>([]);
   const [editingKey, setEditingKey] = useState("");
   useEffect(() => {
     callApiServices.getThongKe().then((response) => setData(response.data));
   }, []);
-  const isEditing = (record: IPatient) => record.id_benh_nhan === editingKey;
-
-  const edit = (record: IPatient) => {
-    form.setFieldsValue({ name: "", age: "", address: "", ...record });
-    setEditingKey(record.id_benh_nhan);
-  };
-  const handleDelete = async (key: React.Key) => {
+  const isEditing = (record: IAna) => record._id === editingKey;
+  const sendEmail = async (record: any) => {
+    console.log(record);
     try {
-      await callApiServices.deleteThuoc(key as string).then((res) => {
-        console.log(res?.data);
-        const newData = data.filter((item) => item.id_benh_nhan !== key);
-        setData(newData);
-      });
-    } catch (error) {}
+      await callApiServices
+        .sendEmail({
+          email: record.email_benh_nhan,
+          id_benh_nhan: record.id_benh_nhan,
+          ho_ten: record.ho_ten,
+          ngay_tiem_mui_ke_tiep: format(
+            new Date(record.ngay_tiem_mui_ke_tiep),
+            "dd-MM-yyyy"
+          ),
+          ten_thuoc: record.ten_thuoc,
+        })
+        .then((res) => console.log(res.data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const cancel = () => {
     setEditingKey("");
-  };
-
-  const save = async (key: React.Key) => {
-    try {
-      const row = (await form.validateFields()) as IPatient;
-
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.id_benh_nhan);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-
-        setData(newData);
-        setEditingKey("");
-        await callApiServices
-          .editBenhNhan(newData[index])
-          .then((res) => console.log(res.data));
-        console.log(newData[index]);
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey("");
-      }
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
-    }
   };
 
   const columns = [
@@ -111,7 +97,7 @@ const SoMuiDaTiemTable: React.FC = () => {
       dataIndex: "id_benh_nhan",
       width: "80px",
 
-      render: (_: any, record: IPatient) => {
+      render: (_: any, record: IAna) => {
         return record.id_benh_nhan.substring(9, 13);
       },
     },
@@ -130,26 +116,49 @@ const SoMuiDaTiemTable: React.FC = () => {
       dataIndex: "ngay_tiem_mui_ke_tiep",
       width: "100px",
       render: (_: any, record: IThongKe) => {
-        return format(new Date(record.ngay_tiem_mui_ke_tiep), "dd-MM-yyyy");
+        return (
+          <span
+            style={
+              compareAsc(new Date(), new Date(record.ngay_tiem_mui_ke_tiep)) >=
+              0
+                ? { color: "red" }
+                : {}
+            }
+          >
+            {format(new Date(record.ngay_tiem_mui_ke_tiep), "dd-MM-yyyy")}
+          </span>
+        );
+      },
+    },
+    {
+      title: "Hành động",
+      dataIndex: "operation",
+      width: "300px",
+      render: (_: any, record: IThongKe) => {
+        return (
+          <span
+            onClick={() => sendEmail(record)}
+            style={{ color: "#1f28af", marginLeft: "8px", cursor: "pointer" }}
+          >
+            Gửi email
+          </span>
+        );
       },
     },
   ];
 
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-      onCell: (record: IPatient) => ({
-        record,
-        inputType: "text",
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
-    };
-  });
+  // const mergedColumns = columns.map((col) => {
+  //   return {
+  //     ...col,
+  //     onCell: (record: IAna) => ({
+  //       record,
+  //       inputType: "text",
+  //       dataIndex: col.dataIndex,
+  //       title: col.title,
+  //       editing: isEditing(record),
+  //     }),
+  //   };
+  // });
 
   return (
     <Form form={form} component={false}>
@@ -161,12 +170,12 @@ const SoMuiDaTiemTable: React.FC = () => {
         }}
         bordered
         dataSource={data}
-        columns={mergedColumns}
+        columns={columns}
         rowClassName="editable-row"
         pagination={{
           onChange: cancel,
         }}
-        id="id_benh_nhan"
+        id="_id"
       />
     </Form>
   );

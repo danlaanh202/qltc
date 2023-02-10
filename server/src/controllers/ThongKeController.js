@@ -31,6 +31,7 @@ class ThongKeController {
             addDays(new Date(item.ngay_tiem), item.so_ngay_tiem_mui_ke_tiep),
             "yyyy-MM-dd"
           ),
+          email_benh_nhan: item["BenhNhan.email"],
           createdAt: item.createdAt,
           updatedAt: item.updatedAt,
         };
@@ -44,8 +45,17 @@ class ThongKeController {
     try {
       await mailer.sendMail(
         req.query.email,
-        "Send Email",
-        "Gửi email đến bạn yêu"
+        "Nhắc nhở tiêm chủng",
+        `<div>
+          <div>Điểm tiêm chủng xin thông báo :</div>
+          <div>Bệnh nhân : ${req.query.ho_ten}</div>
+          <div>ID: ${req.query.id_benh_nhan}</div>
+          <div>Có lịch tiêm mũi tiếp theo vào ngày ${req.query.ngay_tiem_mui_ke_tiep}.</div>
+          <div>Tên thuốc tiêm : ${req.query.ten_thuoc}</div>
+          <div>Mong bệnh nhân sẽ có mặt và tiêm chủng đầy đủ.</div>
+          <div>Xin cảm ơn</div>
+        </div>
+        `
       );
       return res.status(200).json("Đã gửi");
     } catch (error) {

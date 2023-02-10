@@ -88,4 +88,9 @@ export default new (class CallApiServices {
   async getThongKe() {
     return await publicRequest.get("/thong_ke/1");
   }
+  async sendEmail(data: any) {
+    return await publicRequest.get("/thong_ke/send_email", {
+      params: data,
+    });
+  }
 })();

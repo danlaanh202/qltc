@@ -24,6 +24,7 @@ const ChoosenBoxContainer = styled.div<IBox>`
     font-size: 14px;
     line-height: 18px;
     font-weight: 600;
+    text-align: center;
   }
 `;
 const ChoosenBox = ({
