@@ -43,3 +43,12 @@ export interface IPaper extends ITimeStamps {
   ngay_tiem: Date;
   so_ngay_tiem_mui_ke_tiep: number;
 }
+export interface IThongKe extends ITimeStamps {
+  _id: string;
+  id_benh_nhan: string;
+  so_mui_tiem: number;
+  ho_ten: string;
+  ten_thuoc: string;
+  so_mui_con_thieu: number;
+  ngay_tiem_mui_ke_tiep: string;
+}

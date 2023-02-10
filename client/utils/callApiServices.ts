@@ -85,4 +85,7 @@ export default new (class CallApiServices {
   async getPhieuTiem() {
     return await publicRequest.get("/phieu_tiem/get");
   }
+  async getThongKe() {
+    return await publicRequest.get("/thong_ke/1");
+  }
 })();

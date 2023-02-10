@@ -13,14 +13,7 @@ class PhieuTiemController {
   async getPhieu(req, res) {
     try {
       const getDocs = await db.PhieuTiem.findAll({
-        include: [
-          "BacSi",
-          "BenhNhan",
-          "ThuocTiem",
-          // { model: db.BacSi, as: "bac_si" },
-          // { model: db.BenhNhan, as: "benh_nhan" },
-          // { model: db.ThuocTiem, as: "thuoc_tiem" },
-        ],
+        include: ["BacSi", "BenhNhan", "ThuocTiem"],
       });
 
       return res.status(200).json(getDocs);
