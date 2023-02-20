@@ -1,4 +1,5 @@
 import { Steps } from "antd";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -128,6 +129,9 @@ const tao_phieu_tiem = () => {
 
   return (
     <StyledTaoPhieu>
+      <Head>
+        <title>Tạo phiếu tiêm</title>
+      </Head>
       {newPatient === "Chua" && (
         <>
           <div className="new-popup">

@@ -44,14 +44,15 @@ const create = () => {
   const [selectedDoctor, setSelectedDoctor] = useState<IDoctor>();
   const [medicines, setMedicines] = useState<IMedicine[]>([]);
   const [selectedMedicine, setSelectedMedicine] = useState<IMedicine>();
-
+  const [loading, setLoading] = useState(false);
   const nextStep = () => {
     setCurrent((current) => current + 1);
     setSearchQuery("");
   };
   const handleCreatePaper = async (data: any) => {
+    setLoading(true);
     try {
-      await callApiServices
+      return await callApiServices
         .taoPhieuTiem({
           id_benh_nhan: selectedPatient?.id_benh_nhan,
           ma_dinh_danh: selectedDoctor?.ma_dinh_danh,
@@ -61,26 +62,54 @@ const create = () => {
           ngay_tiem: Date.now(),
           so_ngay_tiem_mui_ke_tiep: selectedMedicine?.so_ngay_tiem_mui_ke_tiep,
         })
-        .then((res) => console.log(res.data));
+        .then((res) => {
+          console.log(res.data);
+          setLoading(false);
+        });
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      return error;
     }
   };
   useEffect(() => {
-    if (current === 0 && searchQuery !== "") {
+    if (searchQuery !== "") {
+      setLoading(true);
+    }
+    if (current === 0) {
       callApiServices
         .timKiemBenhNhan(searchQueryDebounce)
-        .then((response) => setPatients(response.data));
+        .then((response) => {
+          setLoading(false);
+          setPatients(response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
-    if (current === 1 && searchQuery !== "") {
+    if (current === 1) {
       callApiServices
         .timKiemBacSi(searchQueryDebounce)
-        .then((response) => setDoctors(response.data));
+        .then((response) => {
+          setDoctors(response.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
-    if (current === 2 && searchQuery !== "") {
+    if (current === 2) {
       callApiServices
         .timKiemThuocTiem(searchQueryDebounce)
-        .then((response) => setMedicines(response.data));
+        .then((response) => {
+          setMedicines(response.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
   }, [current, searchQueryDebounce]);
   return (
@@ -122,6 +151,7 @@ const create = () => {
                 dropdownData={patients}
                 nextStep={nextStep}
                 type="patient"
+                loading={loading}
               />
             )}
             {current === 1 && (
@@ -132,6 +162,7 @@ const create = () => {
                 dropdownData={doctors}
                 nextStep={nextStep}
                 type="doctor"
+                loading={loading}
               />
             )}
             {current === 2 && (
@@ -142,6 +173,7 @@ const create = () => {
                 dropdownData={medicines}
                 nextStep={nextStep}
                 type="medicine"
+                loading={loading}
               />
             )}
             {current === 3 && (
@@ -172,7 +204,10 @@ const create = () => {
                     </span>
                   </div>
                 </div>
-                <CreatePaperForm createPaper={handleCreatePaper} />
+                <CreatePaperForm
+                  loading={loading}
+                  createPaper={handleCreatePaper}
+                />
               </>
             )}
           </div>

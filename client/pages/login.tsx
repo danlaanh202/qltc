@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 const StyledLoginContainer = styled.div`
   width: 100vw;
   height: 100vh;
@@ -75,6 +76,9 @@ const login = () => {
   }, []);
   return (
     <StyledLoginContainer>
+      <Head>
+        <title>Đăng nhập</title>
+      </Head>
       <StyledLoginForm
         onSubmit={handleSubmit(onSubmitHandler as SubmitHandler<FieldValues>)}
       >

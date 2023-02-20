@@ -13,6 +13,7 @@ const StyledHeader = styled.div`
   padding: 0 20px;
   overflow: hidden;
   color: #282423;
+  z-index: 200;
   border-bottom: 1px solid #e9e9e9;
   .menu-icon-container {
     padding: 8px;

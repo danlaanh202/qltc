@@ -20,6 +20,8 @@ class ThuocTiemServices {
       so_ngay_tiem_mui_ke_tiep: parseInt(body.so_ngay_tiem_mui_ke_tiep),
     };
     return await db.ThuocTiem.update(updateRecord, {
+      offset: 0,
+      limit: 20,
       where: {
         ma_so_thuoc: body.ma_so_thuoc,
       },

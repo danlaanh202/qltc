@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ChoosenBox from "../components/box/ChoosenBox";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
+import Head from "next/head";
 
 const StyledPageContainer = styled.div`
   width: 100vw;
@@ -26,6 +27,9 @@ const StyledPageContainer = styled.div`
 const index = () => {
   return (
     <StyledPageContainer>
+      <Head>
+        <title>Trung tâm tiêm chủng</title>
+      </Head>
       <h2 className="title-container">Trung tâm tiêm chủng DĐHHD</h2>
       <div className="button-container">
         <ChoosenBox

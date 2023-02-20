@@ -8,6 +8,9 @@ import { useState } from "react";
 import useVNAddress from "../../hooks/useVNAddress";
 import callApiServices from "../../utils/callApiServices";
 import { getAge } from "../../utils";
+import useSnackbar from "../../hooks/useSnackbar";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 const schema = yup.object({});
 const StyledFormContainer = styled.div`
   .submit-btn {
@@ -18,6 +21,14 @@ const StyledFormContainer = styled.div`
     border: 1px solid #dcdfe6;
     border-radius: 6px;
     cursor: pointer;
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid white;
+      border-left: 2px solid transparent;
+      margin: auto;
+      border-radius: 100%;
+    }
   }
 `;
 const CreateDoctorForm = () => {
@@ -45,8 +56,10 @@ const CreateDoctorForm = () => {
   ] = useVNAddress();
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState();
+  const [open, msg, severity, handleShow, handleClose] = useSnackbar();
+  const [loading, setLoading] = useState(false);
   const onSubmitHandler = async (data: any) => {
-    console.log(data);
+    setLoading(true);
     try {
       await callApiServices
         .taoBacSi({
@@ -57,8 +70,14 @@ const CreateDoctorForm = () => {
           gioi_tinh: gender,
           dia_chi: `${selectWard.name} - ${selectDistrict.name} - ${selectDistrict.name}`,
         })
-        .then((response) => console.log(response.data));
-    } catch (error) {}
+        .then((response) => {
+          setLoading(false);
+          handleShow("Thêm bác sĩ thành công", "success");
+        });
+    } catch (error) {
+      setLoading(false);
+      handleShow("Có lỗi xảy ra", "error");
+    }
   };
   return (
     <StyledFormContainer>
@@ -133,9 +152,23 @@ const CreateDoctorForm = () => {
           />
         </FormRow>
         <button type="submit" className="submit-btn">
-          Thêm bệnh nhân
+          {loading ? (
+            <div className="spinner"></div>
+          ) : (
+            <>Hoàn thành phiếu tiêm</>
+          )}
         </button>
       </form>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {msg}
+        </Alert>
+      </Snackbar>
     </StyledFormContainer>
   );
 };

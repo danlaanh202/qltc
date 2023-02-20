@@ -19,6 +19,17 @@ class ThuocTiemController {
       return res.status(500).json(error);
     }
   }
+  async getFirstWithLimit(req, res) {
+    try {
+      const getDocs = await db.ThuocTiem.findAll({
+        offset: 0,
+        limit: 20,
+      });
+      return res.status(200).json(getDocs);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }
   async getOneByName(req, res) {
     try {
       const doc = await ThuoctiemServices.getDocByName(req.query.ten_thuoc);

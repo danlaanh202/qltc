@@ -3,6 +3,15 @@ export const publicRequest = axios.create({
   baseURL: "http://localhost:4000",
 });
 export default new (class CallApiServices {
+  async createThuocTiem(data: any) {
+    await publicRequest.post("/thuoc_tiem/tao_thuoc_tiem", {
+      ten_thuoc: data.medicine_name,
+      so_luong: parseInt(data.medicine_amount),
+      so_mui_can_tiem: parseInt(data.so_mui),
+      so_ngay_tiem_mui_ke_tiep: parseInt(data.medicine_next),
+      don_gia: parseInt(data.medicine_price),
+    });
+  }
   async getThuocTiem(searchQuery: string, setValue: any) {
     try {
       await publicRequest

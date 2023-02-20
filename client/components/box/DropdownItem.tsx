@@ -6,7 +6,7 @@ const StyledDropdownItemContainer = styled.div`
   border: 1px solid #dbdbdb;
   width: 100%;
   border-radius: 4px;
-  min-height: 100px;
+  min-height: 120px;
   cursor: pointer;
   :hover {
     background: #fafafa;
@@ -34,10 +34,10 @@ const DropdownItem = ({
             <span className="item-label">Họ và tên:</span>{" "}
             {(data as IPatient).ho_ten}
           </div>
-          <div className="item">
+          {/* <div className="item">
             <span className="item-label">CCCD:</span>{" "}
             {(data as IPatient).can_cuoc}
-          </div>
+          </div> */}
           <div className="item">
             <span className="item-label">Ngày sinh:</span>{" "}
             {(data as IPatient).ngay_sinh}
