@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, InputNumber, Popconfirm, Table, Typography } from "antd";
+import {
+  Form,
+  Input,
+  InputNumber,
+  PaginationProps,
+  Popconfirm,
+  Table,
+  Typography,
+} from "antd";
 import styled from "styled-components";
 import callApiServices from "../../utils/callApiServices";
 import { IMedicine } from "../../types";
+import { useRouter } from "next/router";
+import { SortOrder } from "antd/es/table/interface";
+import useSnackbar from "../../hooks/useSnackbar";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
@@ -52,9 +65,23 @@ const MedicineEditTable: React.FC = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState<IMedicine[]>([]);
   const [editingKey, setEditingKey] = useState("");
+  const [page, setPage] = useState(0);
+  const [total, setTotal] = useState(0);
+  const router = useRouter();
+  const onChange: PaginationProps["onChange"] = (_page) => {
+    router.push(`/medicine_management/list?page=${_page}`);
+  };
+  const [open, msg, severity, handleShow, handleClose] = useSnackbar();
+
   useEffect(() => {
-    callApiServices.getAllThuocTiem(setData);
-  }, []);
+    callApiServices.getWithPagination(page).then((res) => {
+      setTotal(res.data.count);
+      setData(res.data.rows);
+    });
+  }, [page]);
+  useEffect(() => {
+    setPage(router.query.page - 1);
+  }, [router]);
   const isEditing = (record: IMedicine) => record.ma_so_thuoc === editingKey;
 
   const edit = (record: IMedicine) => {
@@ -90,9 +117,13 @@ const MedicineEditTable: React.FC = () => {
         console.log(newData[index]);
         await callApiServices
           .editThuoc(newData[index])
-          .then((res) => console.log(res.data));
-        setData(newData);
-        setEditingKey("");
+          .then((res) => {
+            console.log(res.data);
+            handleShow("Sửa thành công", "success");
+            setData(newData);
+            setEditingKey("");
+          })
+          .catch((err) => handleShow("Có lỗi xảy ra", "error"));
       } else {
         newData.push(row);
         setData(newData);
@@ -115,6 +146,13 @@ const MedicineEditTable: React.FC = () => {
       dataIndex: "so_luong",
       width: "150px",
       editable: true,
+      render: (_: any, record: IMedicine) => {
+        return (
+          <div style={record.so_luong === 0 ? { color: "red" } : {}}>
+            {record.so_luong}
+          </div>
+        );
+      },
     },
     {
       title: "Số mũi cần tiêm",
@@ -212,10 +250,22 @@ const MedicineEditTable: React.FC = () => {
         columns={mergedColumns}
         rowClassName="editable-row"
         pagination={{
-          onChange: cancel,
+          current: page + 1,
+          onChange: onChange,
+          total: total,
         }}
         id="ma_so_thuoc"
       />
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {msg}
+        </Alert>
+      </Snackbar>
     </Form>
   );
 };

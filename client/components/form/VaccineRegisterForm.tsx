@@ -28,6 +28,7 @@ const VaccineRegisterForm = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),

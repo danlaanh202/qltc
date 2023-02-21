@@ -28,6 +28,7 @@ const CreatePatientFormGuest = ({
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
@@ -50,14 +51,6 @@ const CreatePatientFormGuest = ({
   const [gender, setGender] = useState("");
   const [dob, setDob] = useState();
   const onSubmitHandler = async (data: any) => {
-    // console.log({
-    //   ...data,
-    //   patient_dob: dob,
-    //   patient_gender: gender,
-    //   district: selectDistrict.name,
-    //   province: selectProvince.name,
-    //   ward: selectWard.name,
-    // });
     try {
       await callApiServices
         .taoBenhNhan({

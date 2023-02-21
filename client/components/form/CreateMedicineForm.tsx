@@ -36,6 +36,7 @@ const CreateMedicineForm = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
@@ -48,6 +49,7 @@ const CreateMedicineForm = () => {
     try {
       await callApiServices.createThuocTiem(data).then((res) => {
         setLoading(false);
+        reset();
         handleShow("Đã thêm thuốc tiêm", "success");
       });
     } catch (error) {

@@ -30,6 +30,14 @@ export default new (class CallApiServices {
       console.log(error);
     }
   }
+  async getWithPagination(page: number) {
+    return await publicRequest.get("/thuoc_tiem/get_with_pagination", {
+      params: {
+        limit: 10,
+        offset: page * 10,
+      },
+    });
+  }
   async timKiemThuocTiem(searchQuery: string) {
     return await publicRequest.get(
       `/thuoc_tiem/tim_kiem?ten_thuoc=${searchQuery}`
@@ -56,6 +64,14 @@ export default new (class CallApiServices {
   }
   async getBenhNhan() {
     return await publicRequest.get("/benh_nhan/get_all");
+  }
+  async getBenhNhanWithPagination(page: number) {
+    return await publicRequest.get("/benh_nhan/get_with_pagination", {
+      params: {
+        limit: 10,
+        offset: 10 * page,
+      },
+    });
   }
   async editBenhNhan(record: any) {
     return await publicRequest.put("/benh_nhan/edit", record);
@@ -96,6 +112,9 @@ export default new (class CallApiServices {
   }
   async getThongKe() {
     return await publicRequest.get("/thong_ke/1");
+  }
+  async getThongKe2() {
+    return await publicRequest.get("/thong_ke/2");
   }
   async sendEmail(data: any) {
     return await publicRequest.get("/thong_ke/send_email", {

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Form, Input, InputNumber, Popconfirm, Table, Typography } from "antd";
 import styled from "styled-components";
 import callApiServices from "../../utils/callApiServices";
-import { IPatient } from "../../types";
+import { IThongKe } from "../../types";
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
   title: any;
   inputType: "number" | "text";
-  record: IPatient;
+  record: IThongKe;
   index: number;
   children: React.ReactNode;
 }
@@ -50,58 +50,28 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 const SoMuiDaTiemTable: React.FC = () => {
   const [form] = Form.useForm();
-  const [data, setData] = useState<IPatient[]>([]);
+  const [data, setData] = useState<IThongKe[]>([]);
   const [editingKey, setEditingKey] = useState("");
   useEffect(() => {
     callApiServices.getThongKe().then((response) => setData(response.data));
   }, []);
-  const isEditing = (record: IPatient) => record.id_benh_nhan === editingKey;
-
-  const edit = (record: IPatient) => {
-    form.setFieldsValue({ name: "", age: "", address: "", ...record });
-    setEditingKey(record.id_benh_nhan);
-  };
-  const handleDelete = async (key: React.Key) => {
-    try {
-      await callApiServices.deleteThuoc(key as string).then((res) => {
-        console.log(res?.data);
-        const newData = data.filter((item) => item.id_benh_nhan !== key);
-        setData(newData);
-      });
-    } catch (error) {}
-  };
+  useEffect(() => {
+    // );
+    console.log(
+      data.reduce((acc, obj) => {
+        let exist = acc.find(
+          ({ id_benh_nhan, ten_thuoc }) =>
+            obj.id_benh_nhan === id_benh_nhan && obj.ten_thuoc === ten_thuoc
+        );
+        if (!exist) acc.push(obj);
+        return acc;
+      }, [])
+    );
+  }, [data]);
+  const isEditing = (record: IThongKe) => record.id_benh_nhan === editingKey;
 
   const cancel = () => {
     setEditingKey("");
-  };
-
-  const save = async (key: React.Key) => {
-    try {
-      const row = (await form.validateFields()) as IPatient;
-
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.id_benh_nhan);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-
-        setData(newData);
-        setEditingKey("");
-        await callApiServices
-          .editBenhNhan(newData[index])
-          .then((res) => console.log(res.data));
-        console.log(newData[index]);
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey("");
-      }
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
-    }
   };
 
   const columns = [
@@ -110,7 +80,7 @@ const SoMuiDaTiemTable: React.FC = () => {
       dataIndex: "id_benh_nhan",
       width: "80px",
 
-      render: (_: any, record: IPatient) => {
+      render: (_: any, record: IThongKe) => {
         return record.id_benh_nhan.substring(9, 13);
       },
     },
@@ -137,7 +107,7 @@ const SoMuiDaTiemTable: React.FC = () => {
     }
     return {
       ...col,
-      onCell: (record: IPatient) => ({
+      onCell: (record: IThongKe) => ({
         record,
         inputType: "text",
         dataIndex: col.dataIndex,

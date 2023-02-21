@@ -17,6 +17,18 @@ class BenhNhanController {
       return res.status(500).json(error);
     }
   }
+  async getWithPagination(req, res) {
+    try {
+      const getDocs = await db.BenhNhan.findAndCountAll({
+        limit: parseInt(req.query.limit),
+        offset: parseInt(req.query.offset),
+        subQuery: false,
+      });
+      return res.status(200).json(getDocs);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }
   async editBenhNhan(req, res) {
     try {
       const updatedDoc = await db.BenhNhan.update(

@@ -3,7 +3,7 @@ import { Form, Input, InputNumber, Popconfirm, Table, Typography } from "antd";
 import styled from "styled-components";
 import callApiServices from "../../utils/callApiServices";
 import { IPaper } from "../../types";
-import { addDays, format } from "date-fns";
+import { addDays, compareAsc, format } from "date-fns";
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
@@ -145,9 +145,28 @@ const PaperListTable: React.FC = () => {
       width: "300px",
 
       render: (_: any, record: IPaper) => {
-        return format(
-          addDays(new Date(record.ngay_tiem), record.so_ngay_tiem_mui_ke_tiep),
-          "dd-MM-yyyy"
+        return (
+          <span
+            style={
+              compareAsc(
+                new Date(),
+                addDays(
+                  new Date(record.ngay_tiem),
+                  record.so_ngay_tiem_mui_ke_tiep
+                )
+              ) >= 0
+                ? { color: "red" }
+                : { color: "#1677FF" }
+            }
+          >
+            {format(
+              addDays(
+                new Date(record.ngay_tiem),
+                record.so_ngay_tiem_mui_ke_tiep
+              ),
+              "dd-MM-yyyy"
+            )}
+          </span>
         );
       },
     },

@@ -11,7 +11,7 @@ import { IDoctor, IMedicine, IPatient } from "../types";
 import callApiServices from "../utils/callApiServices";
 
 const StyledTaoPhieu = styled.div`
-  max-width: 930px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   height: 100vh;
@@ -109,21 +109,40 @@ const tao_phieu_tiem = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
-    if (current === 0 && searchQuery !== "") {
+    if (current === 0) {
       callApiServices
         .timKiemBenhNhan(searchQueryDebounce)
-        .then((response) => setPatients(response.data));
+        .then((response) => {
+          setLoading(false);
+          setPatients(response.data);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
     }
-    if (current === 1 && searchQuery !== "") {
+    if (current === 1) {
       callApiServices
         .timKiemBacSi(searchQueryDebounce)
-        .then((response) => setDoctors(response.data));
+        .then((response) => {
+          setLoading(false);
+          setDoctors(response.data);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
     }
-    if (current === 2 && searchQuery !== "") {
+    if (current === 2) {
       callApiServices
         .timKiemThuocTiem(searchQueryDebounce)
-        .then((response) => setMedicines(response.data));
+        .then((response) => {
+          setLoading(false);
+          setMedicines(response.data);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
     }
   }, [current, searchQueryDebounce]);
 
@@ -179,6 +198,8 @@ const tao_phieu_tiem = () => {
                   dropdownData={patients}
                   nextStep={nextStep}
                   type="patient"
+                  loading={loading}
+                  setLoading={setLoading}
                 />
               )}
               {current === 1 && (
@@ -189,6 +210,8 @@ const tao_phieu_tiem = () => {
                   dropdownData={doctors}
                   nextStep={nextStep}
                   type="doctor"
+                  loading={loading}
+                  setLoading={setLoading}
                 />
               )}
               {current === 2 && (
@@ -199,6 +222,8 @@ const tao_phieu_tiem = () => {
                   dropdownData={medicines}
                   nextStep={nextStep}
                   type="medicine"
+                  loading={loading}
+                  setLoading={setLoading}
                 />
               )}
               {current === 3 && (
@@ -228,8 +253,17 @@ const tao_phieu_tiem = () => {
                         {selectedMedicine?.so_ngay_tiem_mui_ke_tiep}
                       </span>
                     </div>
+                    <div className="item">
+                      <label htmlFor="">Số mũi cần tiêm:</label>{" "}
+                      <span className="item-content">
+                        {selectedMedicine?.so_mui_can_tiem}
+                      </span>
+                    </div>
                   </div>
-                  <CreatePaperForm createPaper={handleCreatePaper} />
+                  <CreatePaperForm
+                    selectedMedicine={selectedMedicine}
+                    createPaper={handleCreatePaper}
+                  />
                 </>
               )}
             </div>

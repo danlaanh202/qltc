@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React from "react";
 import styled from "styled-components";
 import Layout from "../../components/layout/Layout";
@@ -15,6 +16,9 @@ const so_mui_da_tiem = () => {
   return (
     <Layout>
       <StyledCreateContainer>
+        <Head>
+          <title>Thống kê số mũi đã tiêm</title>
+        </Head>
         <MainTop
           title="Số mũi đã tiêm"
           backTitle="Thống kê"

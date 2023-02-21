@@ -36,6 +36,7 @@ const CreatePatientForm = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
@@ -75,6 +76,7 @@ const CreatePatientForm = () => {
         })
         .then((response) => {
           console.log(response.data);
+          reset();
           setLoading(false);
           handleShow("Thêm bệnh nhân thành công", "success");
         });

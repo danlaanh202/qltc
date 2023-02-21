@@ -57,7 +57,7 @@ const create = () => {
           id_benh_nhan: selectedPatient?.id_benh_nhan,
           ma_dinh_danh: selectedDoctor?.ma_dinh_danh,
           ma_so_thuoc: selectedMedicine?.ma_so_thuoc,
-          so_mui_da_tiem: parseInt(data.medicine_amount),
+          so_mui_da_tiem: parseInt(data.so_mui_da_tiem),
           ngay_da_tiem: data.ngay_da_tiem,
           ngay_tiem: Date.now(),
           so_ngay_tiem_mui_ke_tiep: selectedMedicine?.so_ngay_tiem_mui_ke_tiep,
@@ -203,10 +203,17 @@ const create = () => {
                       {selectedMedicine?.so_ngay_tiem_mui_ke_tiep}
                     </span>
                   </div>
+                  <div className="item">
+                    <label htmlFor="">Số mũi cần thiết:</label>{" "}
+                    <span className="item-content">
+                      {selectedMedicine?.so_mui_can_tiem}
+                    </span>
+                  </div>
                 </div>
                 <CreatePaperForm
                   loading={loading}
                   createPaper={handleCreatePaper}
+                  selectedMedicine={selectedMedicine}
                 />
               </>
             )}

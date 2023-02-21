@@ -41,7 +41,7 @@ const index = () => {
         />
         <ChoosenBox
           boxSize={180}
-          href="/medicine_management/list"
+          href="/medicine_management/list?page=1"
           icon={
             <>
               <EditIcon />

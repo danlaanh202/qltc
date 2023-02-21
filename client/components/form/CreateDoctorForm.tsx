@@ -35,6 +35,7 @@ const CreateDoctorForm = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
@@ -72,6 +73,7 @@ const CreateDoctorForm = () => {
         })
         .then((response) => {
           setLoading(false);
+          reset();
           handleShow("Thêm bác sĩ thành công", "success");
         });
     } catch (error) {

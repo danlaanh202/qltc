@@ -9,6 +9,7 @@ import FilterListBox from "../box/FilterListBox";
 import useSnackbar from "../../hooks/useSnackbar";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { IMedicine } from "../../types";
 const schema = yup.object({});
 const StyledFormContainer = styled.div`
   .submit-btn {
@@ -34,9 +35,11 @@ const StyledFormContainer = styled.div`
 const CreateMedicineForm = ({
   createPaper,
   loading = false,
+  selectedMedicine,
 }: {
   createPaper: (data: any) => void;
   loading?: boolean;
+  selectedMedicine: IMedicine;
 }) => {
   const {
     handleSubmit,
@@ -47,11 +50,19 @@ const CreateMedicineForm = ({
     mode: "onChange",
   });
   const [open, msg, severity, handleShow, handleClose] = useSnackbar();
-
   const [vaccinatedDate, setVaccinatedDate] = useState();
+  const [err, setErr] = useState(false);
   const onSubmitHandler = async (data: any) => {
+    console.log(err);
+    if (err) {
+      handleShow("Bạn không đủ điều kiện tiêm", "error");
+      return;
+    }
+    if (data.so_mui_da_tiem >= selectedMedicine.so_mui_can_tiem) {
+      handleShow("Bạn đã tiêm đủ số mũi cần thiết", "error");
+      return;
+    }
     await createPaper({ ...data, ngay_da_tiem: vaccinatedDate }).then((res) => {
-      console.log(res);
       if (res?.id_phieu_tiem) {
         handleShow("Đã hoàn thành phiếu tiêm", "success");
       } else {
@@ -69,7 +80,7 @@ const CreateMedicineForm = ({
             control={control}
             inputType="text"
             label="Số mũi đã tiêm"
-            id="medicine_amount"
+            id="so_mui_da_tiem"
           />
           <FormInput
             control={control}
@@ -80,7 +91,11 @@ const CreateMedicineForm = ({
             startDate={vaccinatedDate}
           />
         </FormRow>
-        <FilterListBox />
+        <FilterListBox
+          setErr={(_bool: boolean) => {
+            setErr(_bool);
+          }}
+        />
         <button type="submit" className="submit-btn">
           {loading ? (
             <div className="spinner"></div>

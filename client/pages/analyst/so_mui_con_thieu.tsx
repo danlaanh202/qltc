@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React from "react";
 import styled from "styled-components";
 import Layout from "../../components/layout/Layout";
@@ -15,8 +16,11 @@ const so_mui_con_thieu = () => {
   return (
     <Layout>
       <StyledCreateContainer>
+        <Head>
+          <title>Thống kê số mũi còn thiếu</title>
+        </Head>
         <MainTop
-          title="Số mũi đã tiêm"
+          title="Số mũi còn thiếu"
           backTitle="Thống kê"
           backRoute="/analyst"
         />

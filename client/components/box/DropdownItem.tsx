@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import styled from "styled-components";
 import { IDoctor, IMedicine, IPatient } from "../../types";
 
@@ -40,7 +41,10 @@ const DropdownItem = ({
           </div> */}
           <div className="item">
             <span className="item-label">Ngày sinh:</span>{" "}
-            {(data as IPatient).ngay_sinh}
+            {format(
+              new Date((data as IPatient).ngay_sinh as string),
+              "dd/MM/yyyy"
+            )}
           </div>
           <div className="item">
             <span className="item-label">Số điện thoại:</span>{" "}
@@ -80,6 +84,10 @@ const DropdownItem = ({
           <div className="item">
             <span className="item-label">Số ngày tiêm mũi kế:</span>{" "}
             {(data as IMedicine).so_ngay_tiem_mui_ke_tiep}
+          </div>
+          <div className="item">
+            <span className="item-label">Số lượng:</span>{" "}
+            {(data as IMedicine).so_luong}
           </div>
           {/* <div className="item">
             <span className="item-label">Mã số thuốc:</span>{" "}

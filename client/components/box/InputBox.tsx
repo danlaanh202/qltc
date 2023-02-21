@@ -1,5 +1,8 @@
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
+import useSnackbar from "../../hooks/useSnackbar";
 import { IDoctor, IMedicine, IPatient } from "../../types";
 import DropdownItem from "./DropdownItem";
 
@@ -42,6 +45,7 @@ const InputBox = ({
   nextStep,
   type = "patient",
   loading = false,
+  setLoading,
 }: {
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
@@ -50,38 +54,65 @@ const InputBox = ({
   nextStep: () => void;
   type?: "patient" | "doctor" | "medicine";
   loading?: boolean;
+  setLoading?: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const [open, msg, severity, handleShow, handleClose] = useSnackbar();
+
   return (
-    <StyledInputBox>
-      <div className="input-container">
-        <input
-          type="text"
-          className="box-input"
-          placeholder={
-            type === "patient"
-              ? "Nhập vào tên bệnh nhân"
-              : type === "doctor"
-              ? "Nhập vào tên bác sĩ"
-              : "Nhập vào tên thuốc"
-          }
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        {loading && <div className="spinner"></div>}
-      </div>
-      <div className="dropdown-container">
-        {dropdownData.map((item) => (
-          <div
-            onClick={() => {
-              setSelectItem(item);
-              nextStep();
+    <>
+      <StyledInputBox>
+        <div className="input-container">
+          <input
+            type="text"
+            className="box-input"
+            placeholder={
+              type === "patient"
+                ? "Nhập vào tên bệnh nhân"
+                : type === "doctor"
+                ? "Nhập vào tên bác sĩ"
+                : "Nhập vào tên thuốc"
+            }
+            value={searchQuery}
+            onChange={(e) => {
+              setLoading(true);
+              setSearchQuery(e.target.value);
             }}
-          >
-            <DropdownItem data={item} type={type} />
-          </div>
-        ))}
-      </div>
-    </StyledInputBox>
+          />
+          {loading && <div className="spinner"></div>}
+        </div>
+        <div className="dropdown-container">
+          {dropdownData.length > 0 &&
+            dropdownData.map((item) => (
+              <div
+                onClick={() => {
+                  if (
+                    type === "medicine" &&
+                    (item as IMedicine).so_luong === 0
+                  ) {
+                    handleShow("Vaccine đã hết", "error");
+                    return;
+                  }
+                  setSelectItem(item);
+                  nextStep();
+                }}
+              >
+                <DropdownItem data={item} type={type} />
+              </div>
+            ))}
+          {dropdownData.length === 0 && <div className="">No data</div>}
+        </div>
+      </StyledInputBox>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {msg}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

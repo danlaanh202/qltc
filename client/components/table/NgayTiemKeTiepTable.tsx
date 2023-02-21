@@ -64,9 +64,9 @@ const SoMuiDaTiemTable: React.FC = () => {
   const [data, setData] = useState<IAna[]>([]);
   const [editingKey, setEditingKey] = useState("");
   useEffect(() => {
-    callApiServices.getThongKe().then((response) => setData(response.data));
+    callApiServices.getThongKe2().then((response) => setData(response.data));
   }, []);
-  const isEditing = (record: IAna) => record._id === editingKey;
+
   const sendEmail = async (record: any) => {
     console.log(record);
     try {
@@ -122,7 +122,7 @@ const SoMuiDaTiemTable: React.FC = () => {
               compareAsc(new Date(), new Date(record.ngay_tiem_mui_ke_tiep)) >=
               0
                 ? { color: "red" }
-                : {}
+                : { color: "#1677FF" }
             }
           >
             {format(new Date(record.ngay_tiem_mui_ke_tiep), "dd-MM-yyyy")}

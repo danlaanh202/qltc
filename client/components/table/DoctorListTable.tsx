@@ -3,6 +3,9 @@ import { Form, Input, InputNumber, Popconfirm, Table, Typography } from "antd";
 import styled from "styled-components";
 import callApiServices from "../../utils/callApiServices";
 import { IDoctor } from "../../types";
+import useSnackbar from "../../hooks/useSnackbar";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
@@ -52,6 +55,7 @@ const MedicineEditTable: React.FC = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState<IDoctor[]>([]);
   const [editingKey, setEditingKey] = useState("");
+  const [open, msg, severity, handleShow, handleClose] = useSnackbar();
   useEffect(() => {
     callApiServices.getBacSi().then((response) => setData(response.data));
   }, []);
@@ -90,10 +94,15 @@ const MedicineEditTable: React.FC = () => {
 
         setData(newData);
         setEditingKey("");
-        await callApiServices.editBacSi(newData[index]).then((res) => {
-          setData(newData);
-          setEditingKey("");
-        });
+        await callApiServices
+          .editBacSi(newData[index])
+          .then((res) => {
+            setData(newData);
+            setEditingKey("");
+            handleShow("Sửa thành công", "success");
+          })
+
+          .catch((err) => handleShow("Có lỗi xảy ra", "error"));
         console.log(newData[index]);
       } else {
         newData.push(row);
@@ -215,6 +224,16 @@ const MedicineEditTable: React.FC = () => {
         // scroll={{ x: 1600 }}
         id="ma_dinh_danh"
       />
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+          {msg}
+        </Alert>
+      </Snackbar>
     </Form>
   );
 };

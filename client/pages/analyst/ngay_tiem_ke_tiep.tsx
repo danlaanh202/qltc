@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React from "react";
 import styled from "styled-components";
 import Layout from "../../components/layout/Layout";
@@ -15,8 +16,11 @@ const ngay_tiem_ke_tiep = () => {
   return (
     <Layout>
       <StyledCreateContainer>
+        <Head>
+          <title>Thống kê ngày tiêm kế tiếp</title>
+        </Head>
         <MainTop
-          title="Số mũi đã tiêm"
+          title="Ngày tiêm kế tiếp"
           backTitle="Thống kê"
           backRoute="/analyst"
         />
