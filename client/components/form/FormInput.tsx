@@ -32,6 +32,11 @@ const StyledFormInputContainer = styled.div<IStyledContainerProps>`
     margin-bottom: 4px;
     line-height: 1.1;
     font-weight: 700;
+    ::before {
+      content: "*";
+      color: #e5285d;
+      margin-right: 4px;
+    }
   }
   .input-container {
     width: 100%;
@@ -184,7 +189,7 @@ const FormInput = (props: IFormProps) => {
           <ComboBox itemList={props.list} setOuterVal={props.setOuterVal} />
         )}
       </div>
-      <span className="reg-error">Vui lòng chọn/điền</span>
+      {/* <span className="reg-error">Vui lòng chọn/điền</span> */}
     </StyledFormInputContainer>
   );
 };

@@ -3,7 +3,7 @@ module.exports = {
   PORT: "1433",
   USER: "danlaanh202",
   PASSWORD: "danlaanh202",
-  DB: "testDb",
+  DB: "QLTC",
   dialect: "mssql",
   pool: {
     max: 5,

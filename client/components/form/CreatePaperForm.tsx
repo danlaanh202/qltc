@@ -44,6 +44,7 @@ const CreateMedicineForm = ({
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
@@ -63,8 +64,9 @@ const CreateMedicineForm = ({
       return;
     }
     await createPaper({ ...data, ngay_da_tiem: vaccinatedDate }).then((res) => {
-      if (res?.id_phieu_tiem) {
+      if (res?.data.id_phieu_tiem) {
         handleShow("Đã hoàn thành phiếu tiêm", "success");
+        reset();
       } else {
         handleShow("Có lỗi xảy ra", "error");
       }

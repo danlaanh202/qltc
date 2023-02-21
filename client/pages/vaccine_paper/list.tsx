@@ -22,7 +22,7 @@ const list = () => {
         <MainTop
           title="Danh sách phiếu tiêm"
           backTitle="Quản lý phiếu tiêm"
-          backRoute="/medicine_management"
+          backRoute="/vaccine_paper"
         />
         <PaperListTable />
       </StyledListContainer>

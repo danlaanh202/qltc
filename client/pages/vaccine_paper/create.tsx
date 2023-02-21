@@ -63,8 +63,8 @@ const create = () => {
           so_ngay_tiem_mui_ke_tiep: selectedMedicine?.so_ngay_tiem_mui_ke_tiep,
         })
         .then((res) => {
-          console.log(res.data);
           setLoading(false);
+          return res;
         });
     } catch (error) {
       setLoading(false);
@@ -152,6 +152,7 @@ const create = () => {
                 nextStep={nextStep}
                 type="patient"
                 loading={loading}
+                setLoading={setLoading}
               />
             )}
             {current === 1 && (
@@ -163,6 +164,7 @@ const create = () => {
                 nextStep={nextStep}
                 type="doctor"
                 loading={loading}
+                setLoading={setLoading}
               />
             )}
             {current === 2 && (
@@ -174,6 +176,7 @@ const create = () => {
                 nextStep={nextStep}
                 type="medicine"
                 loading={loading}
+                setLoading={setLoading}
               />
             )}
             {current === 3 && (
